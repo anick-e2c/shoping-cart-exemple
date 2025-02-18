@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Sélectionner toutes les icônes de suppression (fa-trash-alt)
     const deleteButtons = document.querySelectorAll('.fa-trash-alt');
 
+    // Sélectionner le conteneur des produits
+    const listProducts = document.querySelector('.list-products');
+
+
 
     // Fonction pour mettre à jour le prix total
     function updateTotalPrice() {
@@ -53,15 +57,50 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+    // Fonction pour supprimer le premier élément 'card-body'
+    function removeFirstCardBody() {
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+
+            // Trouver le premier élément 'card-body'
+            const firstCardBody = listProducts.querySelector('.card-body');
+            
+            if (firstCardBody) {
+
+                firstCardBody.classList.add('removing');
+                setTimeout( () => {
+                    firstCardBody.remove(); // Supprimer l'élément du DOM
+                    updateTotalPrice(); // Mettre à jour le prix total
+                    console.log('Premier produit supprimé !');
+
+                }, 300)
+
+            } else {
+                console.log('Aucun produit à supprimer.');
+            }
+        }
+    
+    }
+
+
     // Sélectionner toutes les icônes de poubelle
     const trashIcons = document.querySelectorAll('.fa-trash-alt');
-     // Ajouter des écouteurs d'événements pour les icônes de poubelle
-     trashIcons.forEach((icon) => {
+    
+    // Ajouter des écouteurs d'événements pour les icônes de poubelle
+    trashIcons.forEach((icon) => {
+        icon.addEventListener('click', removeFirstCardBody);
+    });
+
+    // Cette methode supprime que le 2ème élément de card-body
+     /*trashIcons.forEach((icon) => {
         icon.addEventListener('click', () => {
             if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
 
                 // Trouver la carte parente à supprimer
                 const cardBody = icon.closest('.card-body');
+                 
+                //Si vous souhaitez supprimer le produit associé à l'icône cliquée (plutôt que le premier),
+                //utilisez closest pour trouver la carte parente :
+                
                 if (cardBody) {
                     cardBody.classList.add('removing');
                     setTimeout(() => {
@@ -71,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
-    });
+    });*/
 
     
     // Sélectionner toutes les icônes de cœur (fa-heart)
