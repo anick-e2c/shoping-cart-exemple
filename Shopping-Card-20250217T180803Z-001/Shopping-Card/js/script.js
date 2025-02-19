@@ -19,11 +19,11 @@ document.addEventListener('DOMContentLoaded', function () {
         let totalPrice = 0;
 
         // Parcourir tous les produits
-        document.querySelectorAll('.card-body').forEach((product) => {
+        document.querySelectorAll('.card').forEach((product) => {
             const quantity = parseInt(product.querySelector('.quantity').textContent);
             const unitPrice = parseFloat(product.querySelector('.unit-price').textContent);
             totalPrice += quantity * unitPrice;
-            console.log(`lhjkhjkhj${totalPrice}`)
+            
         });
 
         // Mettre à jour l'affichage du prix total
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // Fonction pour supprimer le premier élément 'card-body'
-    function removeFirstCardBody() {
+    /*function removeFirstCardBody() {
         if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
 
             // Trouver le premier élément 'card-body'
@@ -79,38 +79,57 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     
-    }
+    }*/
 
 
     // Sélectionner toutes les icônes de poubelle
     const trashIcons = document.querySelectorAll('.fa-trash-alt');
     
     // Ajouter des écouteurs d'événements pour les icônes de poubelle
-    trashIcons.forEach((icon) => {
+    /*trashIcons.forEach((icon) => {
         icon.addEventListener('click', removeFirstCardBody);
-    });
+    });*/
 
     // Cette methode supprime que le 2ème élément de card-body
-     /*trashIcons.forEach((icon) => {
+    trashIcons.forEach((icon) => {
         icon.addEventListener('click', () => {
             if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
 
-                // Trouver la carte parente à supprimer
-                const cardBody = icon.closest('.card-body');
-                 
-                //Si vous souhaitez supprimer le produit associé à l'icône cliquée (plutôt que le premier),
-                //utilisez closest pour trouver la carte parente :
+                // Trouver la carte parente à supprimer associé à l'icône cliquée 
+                const card = icon.closest('.card');
                 
-                if (cardBody) {
-                    cardBody.classList.add('removing');
+                if (card) {
+                    //cardBody.classList.add('removing');
                     setTimeout(() => {
-                        cardBody.remove(); // Supprimer la carte du DOM
+                        card.remove(); // Supprimer la carte du DOM
                         updateTotalPrice(); // Mettre à jour le prix total
+                        updateCartAfterRemoval(card);
+
                     },300) // Correspond à la durée de l'animation
                 }
             }
         });
-    });*/
+    });
+
+
+    // LE LoCALSTORAGE
+
+    // Fonction pour mettre à jour le panier dans localStorage (optionnel)
+      function updateCartAfterRemoval(card) {
+        // Récupérer le nom du produit à supprimer
+        const productName = card.querySelector('.card-title').textContent;
+    
+        // Récupérer le panier depuis localStorage
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+        // Filtrer le panier pour supprimer le produit
+        cart = cart.filter((product) => product.name !== productName);
+    
+        // Sauvegarder le panier mis à jour dans localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+    
+        console.log('Panier mis à jour dans localStorage.');
+    } 
 
     
     // Sélectionner toutes les icônes de cœur (fa-heart)
@@ -119,8 +138,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Ajouter des écouteurs d'événements pour les icônes de cœur
     heartIcons.forEach((icon) => {
         icon.addEventListener('click', () => {
-            // Basculer la classe 'active' pour appliquer ou retirer la couleur rose
+        // Basculer la classe 'active' pour appliquer ou retirer la couleur rose
             icon.classList.toggle('active');
         });
     });
+    
 })
