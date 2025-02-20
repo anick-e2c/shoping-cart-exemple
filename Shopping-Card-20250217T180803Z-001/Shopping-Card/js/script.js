@@ -1,4 +1,6 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function (e) {
+    e.preventDefault()
+
     // Sélectionner tous les boutons "+" et "-"
     const addButtons = document.querySelectorAll('.fa-plus-circle');
     const removeButtons = document.querySelectorAll('.fa-minus-circle');
